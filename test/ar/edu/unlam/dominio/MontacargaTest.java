@@ -1,10 +1,53 @@
 package ar.edu.unlam.dominio;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 public class MontacargaTest {
+
+	@Test
+	public void dadoQueExisteUnMontaCargasQueNoAdmiteCargasDuplicadasCuandoAgregoUnaCargaDuplicadaObtengoUnResultadoFalso() {
+
+		Double pesoMaximoPermitido = 1000.0;
+		MontaCarga montaCarga = new MontaCarga(pesoMaximoPermitido);
+		Carga carga = new Carga(1L, 10);
+		
+		boolean cargaAgregada = montaCarga.agregarCarga(carga);
+		boolean segundaCargaAgregada = montaCarga.agregarCarga(carga);
+		
+		assertTrue(cargaAgregada);
+		assertFalse(segundaCargaAgregada);
+	}
+
+	@Test
+	public void test() {
+		Carga carga = new Carga(1L, 100000D);
+		Integer hashCarga = carga.hashCode();
+
+		Carga otraCarga = new Carga(1L, 100000D);
+		Integer hashOtraCarga = otraCarga.hashCode();
+
+		assertTrue(hashCarga.equals(hashOtraCarga));
+	}
+
+	@Test
+	public void metodoParaExplicarEquals() {
+		String valorEsperado = "Algo";
+
+		String valorObtenido = new String("Algo");
+
+		assertTrue(valorEsperado.equals(valorObtenido));
+
+		Carga carga = new Carga(1L, 10);
+		Carga otraCarga = new Carga(1L, 10);
+
+		assertEquals(carga, otraCarga);
+//		assertTrue(carga.equals(carga));
+//		assertTrue(carga.equals(otraCarga));
+	}
 
 	@Test
 	public void dadoQueNoExisteUnaCargaAlCrearLaMismaSePuedeObtenerSuPeso() {
@@ -69,18 +112,17 @@ public class MontacargaTest {
 
 		montaCarga.cargar(carga);
 		montaCarga.cargar(carga2);
-		
+
 		montaCarga.vaciar();
-		
-		
+
 		Double valorEsperado = 0.0;
 		Double valorObtenido = montaCarga.obtenerPesoCargado();
 		assertEquals(valorEsperado, valorObtenido);
-		
+
 		Integer valorEsperado2 = 0;
 		Integer valorObtenido2 = montaCarga.obtenerCantidadDeCargas();
 		assertEquals(valorEsperado2, valorObtenido2);
-		
+
 	}
 
 }
